@@ -1,0 +1,1 @@
+This paper is about using machine learning for cybersecurity. We look at some methods and test them on data. The results show that our method works well and is better than other methods. We think this is useful for many applications. Future work will look at more data and more methods to make the results even better.

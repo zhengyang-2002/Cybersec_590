@@ -1,0 +1,22 @@
+[project]
+name = "abstract-scorer"
+version = "0.1.0"
+description = "LLM-powered structured reviewer for paper abstracts (Gradio + DeepSeek)"
+readme = "README.md"
+authors = [
+    { name = "ZY", email = "3149814060@qq.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "gradio>=6.27.0",
+    "openai>=3.14.1",
+    "pillow>=12.3.0",
+    "python-dotenv>=1.2.3",
+]
+
+[project.scripts]
+abstract-scorer = "abstract_scorer:main"
+
+[build-system]
+requires = ["uv_build>=0.12.15,<0.13.0"]
+build-backend = "uv_build"

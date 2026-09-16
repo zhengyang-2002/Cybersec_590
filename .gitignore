@@ -1,0 +1,15 @@
+# Secrets: never commit keys or local env files
+.env
+DeepseekAPI.txt
+DukeAiGateway.txt
+
+# Python / uv
+.venv/
+__pycache__/
+*.py[oc]
+build/
+dist/
+*.egg-info/
+
+# macOS
+.DS_Store
