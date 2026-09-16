@@ -1,14 +1,15 @@
 #!/usr/bin/env bash
-# 测试任意 OpenAI 兼容网关。
-# 用法：./test_gateway.sh [DeepseekAPI.txt|DukeAiGateway.txt] [模型名]
+# Smoke-test any OpenAI-compatible gateway with curl.
+# Usage: ./test_gateway.sh [DeepseekAPI.txt|DukeAiGateway.txt] [model-name]
+# The config file must contain two lines: "baseURL:<url>" and "key:<api-key>".
 set -u
 DIR="$(cd "$(dirname "$0")" && pwd)"
 CFG="$DIR/${1:-DeepseekAPI.txt}"
-MODEL="${2:-deepseek-chat}"
+MODEL="${2:-deepseek-flash}"
 BASE_URL=$(grep '^baseURL:' "$CFG" | cut -d: -f2- | tr -d '[:space:]' | sed 's#/v1$##')
 KEY=$(grep '^key:' "$CFG" | cut -d: -f2- | tr -d '[:space:]')
 
-echo "== 1. 列出可用模型 ($BASE_URL) =="
+echo "== 1. List available models ($BASE_URL) =="
 curl -s --max-time 30 -w "\nHTTP_STATUS:%{http_code}\n" "$BASE_URL/v1/models" \
   -H "Authorization: Bearer $KEY" \
   | python3 -c '
@@ -25,11 +26,11 @@ except Exception:
 '
 
 echo
-echo "== 2. 对话请求 ($MODEL) =="
+echo "== 2. Chat completion ($MODEL) =="
 curl -s --max-time 60 "$BASE_URL/v1/chat/completions" \
   -H "Authorization: Bearer $KEY" \
   -H "Content-Type: application/json" \
-  -d "{\"model\": \"$MODEL\", \"messages\": [{\"role\": \"user\", \"content\": \"用一句话介绍你自己\"}], \"max_tokens\": 100}" \
+  -d "{\"model\": \"$MODEL\", \"messages\": [{\"role\": \"user\", \"content\": \"Introduce yourself in one sentence.\"}], \"max_tokens\": 100, \"thinking\": {\"type\": \"disabled\"}}" \
   | python3 -c '
 import sys, json
 d = json.load(sys.stdin)
@@ -37,5 +38,5 @@ if "choices" in d:
     print("model:", d.get("model"))
     print("reply:", d["choices"][0]["message"]["content"])
 else:
-    print(json.dumps(d, indent=2, ensure_ascii=False)[:800])
+    print(json.dumps(d, indent=2)[:800])
 '

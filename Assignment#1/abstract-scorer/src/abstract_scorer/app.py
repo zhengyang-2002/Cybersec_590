@@ -37,7 +37,7 @@ def _format_result(result: dict[str, Any]):
     summary_md = (
         f"### Summary\n\n{result.get('summary', '')}\n\n"
         f"**Why this counts as an abstract:** {result.get('reason', '')}\n\n"
-        f"<sub>Model: {meta.get('model')} · thinking: {'on' if meta.get('thinking') else 'off'} · "
+        f"<sub>Model: {meta.get('model')} | thinking: {'on' if meta.get('thinking') else 'off'} | "
         f"tokens in/out: {meta.get('prompt_tokens')}/{meta.get('completion_tokens')}</sub>"
     )
     return f"{overall} / 10", rows, summary_md, result
@@ -122,7 +122,7 @@ def build_app() -> gr.Blocks:
 def main() -> None:
     build_app().launch(
         server_name=os.environ.get("HOST", "0.0.0.0"),
-        server_port=int(os.environ.get("PORT", "7860")),
+        server_port=int(os.environ.get("PORT", "1234")),
     )
 
 

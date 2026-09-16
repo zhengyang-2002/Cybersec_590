@@ -21,7 +21,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 
 ENV PATH="/app/.venv/bin:$PATH" \
     HOST=0.0.0.0 \
-    PORT=7860
+    PORT=1234
 
-EXPOSE 7860
+EXPOSE 1234
 CMD ["abstract-scorer"]

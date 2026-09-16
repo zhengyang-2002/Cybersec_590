@@ -9,6 +9,24 @@ and refuses to score it.
 Built for CYBERSEC Assignment 1 to practice `uv`, Docker, and environment-based
 configuration.
 
+## Quick start (Docker, from a clean machine)
+
+Requires only Git and Docker. You need an API key for an OpenAI-compatible
+endpoint (DeepSeek by default; see [Configuration](#configuration) for others).
+
+```
+git clone git@github.com:zhengyang-2002/Cybersec_590.git
+cd "Cybersec_590/Assignment#1/abstract-scorer"
+cp .env.example .env
+# edit .env and set LLM_API_KEY=<your key>
+docker build -t abstract-scorer .
+docker run --rm -p 1234:1234 --env-file .env abstract-scorer
+```
+
+Then open http://localhost:1234 in a browser. Try the files in `samples/`:
+`good_abstract.txt` scores high, `weak_abstract.txt` scores low,
+`not_abstract.txt` is rejected, and `abstract_screenshot.png` exercises image input.
+
 ## How it works
 
 1. **Local validation** (free, no model call): input must be 30-500 words.
@@ -39,7 +57,7 @@ cp .env.example .env
 | `LLM_API_KEY`  | (required)                 | API key                         |
 | `LLM_BASE_URL` | `https://api.deepseek.com` | Any OpenAI-compatible endpoint  |
 | `LLM_MODEL`    | `deepseek-flash`           | Model name                      |
-| `PORT`         | `7860`                     | Port the web UI listens on      |
+| `PORT`         | `1234`                     | Port the web UI listens on      |
 
 To use the Duke AI Gateway instead, set `LLM_BASE_URL=https://litellm.oit.duke.edu/v1`
 and a model name available there.
@@ -53,16 +71,16 @@ uv sync
 uv run abstract-scorer
 ```
 
-Open http://localhost:7860.
+Open http://localhost:1234.
 
 ## Run with Docker
 
 ```
 docker build -t abstract-scorer .
-docker run --rm -p 7860:7860 --env-file .env abstract-scorer
+docker run --rm -p 1234:1234 --env-file .env abstract-scorer
 ```
 
-Open http://localhost:7860.
+Open http://localhost:1234.
 
 ## Project layout
 
