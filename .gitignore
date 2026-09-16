@@ -13,3 +13,6 @@ dist/
 
 # macOS
 .DS_Store
+
+# Course handouts kept locally only
+Assignment_requirement.txt
